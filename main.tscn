@@ -1,0 +1,134 @@
+[gd_scene load_steps=8 format=3 uid="uid://d17fbhbyt6hfv"]
+
+[ext_resource type="Script" path="res://app.gd" id="1_ply1r"]
+[ext_resource type="Texture2D" uid="uid://bbwvuawn4l12k" path="res://icon.svg" id="1_ypwub"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_weo5e"]
+font_size = 48
+
+[sub_resource type="LabelSettings" id="LabelSettings_l6upu"]
+font_size = 24
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x2rdu"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mh2tk"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3f04v"]
+
+[node name="Canvas" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ply1r")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Panel"]
+layout_mode = 0
+offset_left = 127.0
+offset_top = 259.0
+offset_right = 255.0
+offset_bottom = 387.0
+texture = ExtResource("1_ypwub")
+
+[node name="TitleLabel" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -351.0
+offset_right = 351.0
+offset_bottom = 89.0
+grow_horizontal = 2
+text = "Javidi's Adventure Launcher"
+label_settings = SubResource("LabelSettings_weo5e")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -507.0
+offset_top = -17.0
+offset_right = -116.0
+offset_bottom = 17.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "Awaiting orders..."
+label_settings = SubResource("LabelSettings_l6upu")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -468.0
+offset_top = -213.0
+offset_right = 468.0
+offset_bottom = -81.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+metadata/_edit_group_ = true
+
+[node name="OpenFilesButton" type="Button" parent="Panel/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+theme_override_styles/focus = SubResource("StyleBoxEmpty_x2rdu")
+text = "Open Folder"
+
+[node name="DownloadButton" type="Button" parent="Panel/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+theme_override_styles/focus = SubResource("StyleBoxEmpty_mh2tk")
+text = "Download Latest"
+
+[node name="PlayGameButton" type="Button" parent="Panel/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+theme_override_styles/focus = SubResource("StyleBoxEmpty_3f04v")
+text = "Play Game
+"
+
+[node name="ProgressBar" type="ProgressBar" parent="Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -468.0
+offset_top = -60.0
+offset_right = 468.0
+offset_bottom = -33.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="DownloadLocator" type="HTTPRequest" parent="."]
+
+[node name="Downloader" type="HTTPRequest" parent="."]
+
+[node name="UnzipTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="pressed" from="Panel/HBoxContainer/OpenFilesButton" to="." method="on_openFilesButton_pressed"]
+[connection signal="pressed" from="Panel/HBoxContainer/DownloadButton" to="." method="on_download_button_pressed"]
+[connection signal="pressed" from="Panel/HBoxContainer/PlayGameButton" to="." method="_on_play_game_button_pressed"]
+[connection signal="request_completed" from="DownloadLocator" to="." method="_on_download_link_retrieved"]
+[connection signal="request_completed" from="Downloader" to="." method="_on_download_completed"]
+[connection signal="timeout" from="UnzipTimer" to="." method="_on_unzip_timer_timeout"]
